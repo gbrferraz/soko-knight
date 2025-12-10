@@ -8,13 +8,13 @@ Canvas :: struct {
 }
 
 init_canvas :: proc(width, height: i32) -> Canvas {
-	virtual_screen := Canvas {
+	canvas := Canvas {
 		width          = width,
 		height         = height,
 		render_texture = rl.LoadRenderTexture(width, height),
 	}
 
-	return virtual_screen
+	return canvas
 }
 
 draw_canvas :: proc(canvas: ^Canvas) {
@@ -30,7 +30,7 @@ draw_canvas :: proc(canvas: ^Canvas) {
 	rl.DrawTexturePro(canvas.render_texture.texture, src_rec, dest_rec, {0, 0}, 0, rl.WHITE)
 }
 
-unload_virtual_screen :: proc(vs: Canvas) {
+unload_canvas :: proc(vs: Canvas) {
 	rl.UnloadRenderTexture(vs.render_texture)
 }
 

@@ -66,5 +66,5 @@ get_sprite_src_rect :: proc(coord: Vec2i) -> rl.Rectangle {
 }
 
 unload_game :: proc(game: ^Game) {
-	unload_virtual_screen(game.canvas)
+	unload_canvas(game.canvas)
 }
