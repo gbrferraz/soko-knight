@@ -1,6 +1,5 @@
 package soko_knight
 
-import "core:fmt"
 import rl "vendor:raylib"
 
 Tilemap :: struct {

@@ -2,7 +2,7 @@ package soko_knight
 
 import rl "vendor:raylib"
 
-TILE_SIZE :: 16
+TILE_SIZE :: 10
 
 Vec2i :: [2]int
 
@@ -27,19 +27,6 @@ init_game :: proc() -> Game {
 		renderer = rl.LoadRenderTexture(320, 180),
 		atlas = rl.LoadTexture("res/ase/tileset.png"),
 		level = load_level("levels/level.json"),
-	}
-
-	game.level.tilemap.width = 20
-	game.level.tilemap.height = 12
-
-	box := Entity {
-		type = .Box,
-		pos  = {3, 3},
-	}
-
-	player := Entity {
-		type = .Player,
-		pos  = {5, 5},
 	}
 
 	return game
