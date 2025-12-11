@@ -10,10 +10,9 @@ Game :: struct {
 	world_camera:  rl.Camera2D,
 	screen_camera: rl.Camera2D,
 	renderer:      rl.RenderTexture,
-	entities:      [dynamic]Entity,
 	state:         GameState,
+	level:         Level,
 	atlas:         rl.Texture2D,
-	tilemap:       Tilemap,
 }
 
 GameState :: enum {
@@ -27,12 +26,13 @@ init_game :: proc() -> Game {
 		screen_camera = {zoom = 1},
 		renderer = rl.LoadRenderTexture(320, 180),
 		atlas = rl.LoadTexture("res/ase/tileset.png"),
-		tilemap = {width = 10, height = 10},
+		level = load_level("levels/level.json"),
 	}
 
-	game.tilemap.data = make([]TileType, game.tilemap.width * game.tilemap.height)
-	game.tilemap.data[2] = .Wall
-	game.tilemap.data[44] = .Wall
+	game.level.tilemap.data = make(
+		[]TileType,
+		game.level.tilemap.width * game.level.tilemap.height,
+	)
 
 	box := Entity {
 		type = .Box,
@@ -44,9 +44,6 @@ init_game :: proc() -> Game {
 		pos  = {5, 5},
 	}
 
-	append(&game.entities, box)
-	append(&game.entities, player)
-
 	return game
 }
 
@@ -56,7 +53,7 @@ update_game :: proc(using game: ^Game) {
 
 draw_game :: proc(using game: ^Game) {
 	draw_tilemap(game)
-	for entity in entities {
+	for entity in level.entities {
 		draw_entity(entity, game)
 	}
 }
@@ -66,5 +63,6 @@ get_sprite_src_rect :: proc(coord: Vec2i) -> rl.Rectangle {
 }
 
 unload_game :: proc(game: ^Game) {
+	save_level(game.level, "levels/level.json")
 	rl.UnloadRenderTexture(game.renderer)
 }

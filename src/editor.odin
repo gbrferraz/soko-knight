@@ -40,8 +40,8 @@ place_selection :: proc(selection: EditorSelection, game: ^Game) {
 			type = entity_type,
 			pos  = grid_coord,
 		}
-		if _, ok := get_entity_at_pos(grid_coord, game.entities); !ok {
-			append(&game.entities, new_entity)
+		if _, ok := get_entity_at_pos(grid_coord, game.level.entities); !ok {
+			append(&game.level.entities, new_entity)
 		}
 	case TileType:
 	}
@@ -55,8 +55,8 @@ remove_selection :: proc(game: ^Game) {
 		int(math.floor(virtual_mouse.y / TILE_SIZE)),
 	}
 
-	if entity_index, ok := get_entity_index_at_pos(grid_coord, game.entities); ok {
-		unordered_remove(&game.entities, entity_index)
+	if entity_index, ok := get_entity_index_at_pos(grid_coord, game.level.entities); ok {
+		unordered_remove(&game.level.entities, entity_index)
 	}
 }
 
@@ -109,7 +109,7 @@ draw_canvas_editor :: proc(editor: ^Editor, game: ^Game) {
 		src = get_sprite_src_rect(sprite_coord)
 	case TileType:
 		tile_type := editor.selection.(TileType)
-		sprite_coord := TILE_SPRITES[tile_type]
+		sprite_coord := TILE_PROPERTIES[tile_type].sprite_coord
 		src = get_sprite_src_rect(sprite_coord)
 	}
 

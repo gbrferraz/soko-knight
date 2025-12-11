@@ -36,7 +36,7 @@ draw_entity :: proc(using entity: Entity, game: ^Game) {
 }
 
 update_entities :: proc(using game: ^Game) {
-	for &entity in entities {
+	for &entity in level.entities {
 		switch entity.type {
 		case .Player:
 			move_player(&entity, game)
@@ -69,7 +69,7 @@ get_entity_index_at_pos :: proc(pos: Vec2i, entities: [dynamic]Entity) -> (int, 
 try_move :: proc(entity: ^Entity, dir: Vec2i, game: ^Game) -> bool {
 	dest_pos := entity.pos + dir
 
-	if obstacle, ok := get_entity_at_pos(dest_pos, game.entities); ok {
+	if obstacle, ok := get_entity_at_pos(dest_pos, game.level.entities); ok {
 		if ENTITY_DEFINITIONS[obstacle.type].solid {
 			can_push := false
 			if ENTITY_DEFINITIONS[obstacle.type].pushable {
@@ -84,7 +84,7 @@ try_move :: proc(entity: ^Entity, dir: Vec2i, game: ^Game) -> bool {
 		}
 	}
 
-	if tile, ok := get_tile_at_pos(dest_pos, game.tilemap); ok {
+	if tile, ok := get_tile_at_pos(dest_pos, game.level.tilemap); ok {
 		if TILE_PROPERTIES[tile].solid {
 			return false
 		}

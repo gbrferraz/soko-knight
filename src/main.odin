@@ -44,14 +44,13 @@ main :: proc() {
 		rl.ClearBackground(rl.BLACK)
 		rl.BeginMode2D(game.screen_camera)
 
-		draw_canvas(&game.renderer)
+		draw_renderer(&game.renderer)
 
 		if game.state == .Editor {
 			draw_screen_editor(&editor, &game)
 		}
 
 		rl.EndMode2D()
-
 
 		rl.EndDrawing()
 	}

@@ -2,22 +2,19 @@ package soko_knight
 
 import rl "vendor:raylib"
 
-draw_canvas :: proc(canvas: ^rl.RenderTexture) {
+draw_renderer :: proc(using r: ^rl.RenderTexture) {
 	screen_width, screen_height := f32(rl.GetScreenWidth()), f32(rl.GetScreenHeight())
 
-	scale := min(
-		screen_width / f32(canvas.texture.width),
-		screen_height / f32(canvas.texture.height),
-	)
+	scale := min(screen_width / f32(texture.width), screen_height / f32(texture.height))
 
-	dest_width, dest_height :=
-		f32(canvas.texture.width) * scale, f32(canvas.texture.height) * scale
+	dest_width, dest_height := f32(texture.width) * scale, f32(texture.height) * scale
+
 	offset_x, offset_y := (screen_width - dest_width) * 0.5, (screen_height - dest_height) * 0.5
 
-	src_rec := rl.Rectangle{0, 0, f32(canvas.texture.width), -f32(canvas.texture.height)}
+	src_rec := rl.Rectangle{0, 0, f32(texture.width), -f32(texture.height)}
 	dest_rec := rl.Rectangle{offset_x, offset_y, dest_width, dest_height}
 
-	rl.DrawTexturePro(canvas.texture, src_rec, dest_rec, {0, 0}, 0, rl.WHITE)
+	rl.DrawTexturePro(texture, src_rec, dest_rec, {0, 0}, 0, rl.WHITE)
 }
 
 screen_to_renderer :: proc(
@@ -25,7 +22,6 @@ screen_to_renderer :: proc(
 	cam: rl.Camera2D,
 	pos: rl.Vector2,
 ) -> rl.Vector2 {
-
 	screen_width, screen_height := f32(rl.GetScreenWidth()), f32(rl.GetScreenHeight())
 	scale := min(
 		screen_width / f32(renderer.texture.width),
@@ -50,7 +46,6 @@ renderer_to_screen :: proc(
 	cam: rl.Camera2D,
 	pos: rl.Vector2,
 ) -> rl.Vector2 {
-
 	virtual_pos := rl.GetWorldToScreen2D(pos, cam)
 
 	screen_width := f32(rl.GetScreenWidth())
