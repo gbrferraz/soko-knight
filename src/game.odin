@@ -2,9 +2,9 @@ package soko_knight
 
 import rl "vendor:raylib"
 
-Vec2i :: [2]int
-
 TILE_SIZE :: 16
+
+Vec2i :: [2]int
 
 Game :: struct {
 	world_camera:  rl.Camera2D,
@@ -29,10 +29,8 @@ init_game :: proc() -> Game {
 		level = load_level("levels/level.json"),
 	}
 
-	game.level.tilemap.data = make(
-		[]TileType,
-		game.level.tilemap.width * game.level.tilemap.height,
-	)
+	game.level.tilemap.width = 20
+	game.level.tilemap.height = 12
 
 	box := Entity {
 		type = .Box,
@@ -63,6 +61,5 @@ get_sprite_src_rect :: proc(coord: Vec2i) -> rl.Rectangle {
 }
 
 unload_game :: proc(game: ^Game) {
-	save_level(game.level, "levels/level.json")
 	rl.UnloadRenderTexture(game.renderer)
 }

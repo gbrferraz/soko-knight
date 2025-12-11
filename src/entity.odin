@@ -84,7 +84,7 @@ try_move :: proc(entity: ^Entity, dir: Vec2i, game: ^Game) -> bool {
 		}
 	}
 
-	if tile, ok := get_tile_at_pos(dest_pos, game.level.tilemap); ok {
+	if tile, ok := get_tile_at_pos(game.level.tilemap, dest_pos); ok {
 		if TILE_PROPERTIES[tile].solid {
 			return false
 		}

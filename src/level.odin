@@ -12,9 +12,11 @@ Level :: struct {
 save_level :: proc(level: Level, path: string) {
 	if level_data, error := json.marshal(level); error == nil {
 		os.write_entire_file(path, level_data)
+		fmt.printfln("Level saved")
 	}
 }
 
+@(require_results)
 load_level :: proc(path: string) -> Level {
 	level: Level
 

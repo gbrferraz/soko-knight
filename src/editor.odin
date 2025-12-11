@@ -44,6 +44,8 @@ place_selection :: proc(selection: EditorSelection, game: ^Game) {
 			append(&game.level.entities, new_entity)
 		}
 	case TileType:
+		tile_type := selection.(TileType)
+		set_tile_at_pos(&game.level.tilemap, grid_coord, tile_type)
 	}
 }
 
@@ -77,11 +79,12 @@ update_editor :: proc(game: ^Game, editor: ^Editor) {
 	if rl.IsKeyPressed(.TWO) {editor.selection = .Player}
 	if rl.IsKeyPressed(.THREE) {editor.selection = .Ground}
 	if rl.IsKeyPressed(.FOUR) {editor.selection = .Wall}
+
+	if rl.IsKeyPressed(.F5) {save_level(game.level, "levels/level.json")}
+	if rl.IsKeyPressed(.F9) {game.level = load_level("levels/level.json")}
 }
 
 draw_screen_editor :: proc(editor: ^Editor, game: ^Game) {
-	draw_mode_buttons()
-
 	virtual_mouse := screen_to_renderer(game.renderer, game.world_camera, rl.GetMousePosition())
 
 	tile_x := i32(math.floor(virtual_mouse.x / TILE_SIZE))

@@ -1,5 +1,6 @@
 package soko_knight
 
+import "core:fmt"
 import rl "vendor:raylib"
 
 Tilemap :: struct {
@@ -37,7 +38,7 @@ draw_tilemap :: proc(using game: ^Game) {
 	}
 }
 
-get_tile_at_pos :: proc(pos: Vec2i, using tilemap: Tilemap) -> (TileType, bool) {
+get_tile_at_pos :: proc(using tilemap: Tilemap, pos: Vec2i) -> (TileType, bool) {
 	if pos.y < 0 || pos.y >= height || pos.x < 0 || pos.x >= width {
 		return nil, false
 	}
@@ -45,4 +46,13 @@ get_tile_at_pos :: proc(pos: Vec2i, using tilemap: Tilemap) -> (TileType, bool) 
 	index := pos.y * width + pos.x
 	tile_id := data[index]
 	return tile_id, true
+}
+
+set_tile_at_pos :: proc(using tilemap: ^Tilemap, pos: Vec2i, type: TileType) {
+	if pos.y < 0 || pos.y >= height || pos.x < 0 || pos.x >= width {
+		return
+	}
+
+	index := pos.y * width + pos.x
+	data[index] = type
 }
