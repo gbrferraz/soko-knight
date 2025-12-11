@@ -26,7 +26,7 @@ main :: proc() {
 		}
 
 		// DRAW //
-		rl.BeginTextureMode(game.canvas.render_texture)
+		rl.BeginTextureMode(game.renderer)
 		rl.BeginMode2D(game.world_camera)
 
 		// GAME //
@@ -44,7 +44,7 @@ main :: proc() {
 		rl.ClearBackground(rl.BLACK)
 		rl.BeginMode2D(game.screen_camera)
 
-		draw_canvas(&game.canvas)
+		draw_canvas(&game.renderer)
 
 		if game.state == .Editor {
 			draw_screen_editor(&editor, &game)

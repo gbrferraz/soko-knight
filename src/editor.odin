@@ -26,7 +26,7 @@ drag_camera :: proc(camera: ^rl.Camera2D) {
 }
 
 place_selection :: proc(selection: EditorSelection, game: ^Game) {
-	virtual_mouse := screen_to_canvas(game.canvas, game.world_camera, rl.GetMousePosition())
+	virtual_mouse := screen_to_renderer(game.renderer, game.world_camera, rl.GetMousePosition())
 
 	grid_coord := Vec2i {
 		int(math.floor(virtual_mouse.x / TILE_SIZE)),
@@ -48,7 +48,7 @@ place_selection :: proc(selection: EditorSelection, game: ^Game) {
 }
 
 remove_selection :: proc(game: ^Game) {
-	virtual_mouse := screen_to_canvas(game.canvas, game.world_camera, rl.GetMousePosition())
+	virtual_mouse := screen_to_renderer(game.renderer, game.world_camera, rl.GetMousePosition())
 
 	grid_coord := Vec2i {
 		int(math.floor(virtual_mouse.x / TILE_SIZE)),
@@ -82,7 +82,7 @@ update_editor :: proc(game: ^Game, editor: ^Editor) {
 draw_screen_editor :: proc(editor: ^Editor, game: ^Game) {
 	draw_mode_buttons()
 
-	virtual_mouse := screen_to_canvas(game.canvas, game.world_camera, rl.GetMousePosition())
+	virtual_mouse := screen_to_renderer(game.renderer, game.world_camera, rl.GetMousePosition())
 
 	tile_x := i32(math.floor(virtual_mouse.x / TILE_SIZE))
 	tile_y := i32(math.floor(virtual_mouse.y / TILE_SIZE))
@@ -95,7 +95,7 @@ draw_screen_editor :: proc(editor: ^Editor, game: ^Game) {
 }
 
 draw_canvas_editor :: proc(editor: ^Editor, game: ^Game) {
-	virtual_mouse := screen_to_canvas(game.canvas, game.world_camera, rl.GetMousePosition())
+	virtual_mouse := screen_to_renderer(game.renderer, game.world_camera, rl.GetMousePosition())
 
 	tile_x := i32(math.floor(virtual_mouse.x / TILE_SIZE)) * TILE_SIZE
 	tile_y := i32(math.floor(virtual_mouse.y / TILE_SIZE)) * TILE_SIZE

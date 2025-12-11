@@ -9,7 +9,7 @@ TILE_SIZE :: 16
 Game :: struct {
 	world_camera:  rl.Camera2D,
 	screen_camera: rl.Camera2D,
-	canvas:        Canvas,
+	renderer:      rl.RenderTexture,
 	entities:      [dynamic]Entity,
 	state:         GameState,
 	atlas:         rl.Texture2D,
@@ -25,7 +25,7 @@ init_game :: proc() -> Game {
 	game := Game {
 		world_camera = {zoom = 1},
 		screen_camera = {zoom = 1},
-		canvas = init_canvas(320, 180),
+		renderer = rl.LoadRenderTexture(320, 180),
 		atlas = rl.LoadTexture("res/ase/tileset.png"),
 		tilemap = {width = 10, height = 10},
 	}
@@ -66,5 +66,5 @@ get_sprite_src_rect :: proc(coord: Vec2i) -> rl.Rectangle {
 }
 
 unload_game :: proc(game: ^Game) {
-	unload_canvas(game.canvas)
+	rl.UnloadRenderTexture(game.renderer)
 }
