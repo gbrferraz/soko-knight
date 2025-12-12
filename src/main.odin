@@ -5,10 +5,13 @@ import rl "vendor:raylib"
 main :: proc() {
 	rl.SetConfigFlags({.WINDOW_RESIZABLE})
 	rl.InitWindow(1280, 720, "Sokoban Adventure")
-	rl.SetTargetFPS(60)
 
 	game := init_game()
 	editor: Editor
+
+	crt_shader := rl.LoadShader(nil, "src/shaders/crt.fs")
+	loc_render_size := rl.GetShaderLocation(crt_shader, "renderSize")
+	loc_time := rl.GetShaderLocation(crt_shader, "time")
 
 	for !rl.WindowShouldClose() {
 		// UPDATE
@@ -42,19 +45,34 @@ main :: proc() {
 		// UI //
 		rl.BeginDrawing()
 		rl.ClearBackground(rl.BLACK)
+
+
+		render_w := f32(game.renderer.texture.width)
+		render_h := f32(game.renderer.texture.height)
+		render_size := [2]f32{render_w, render_h}
+		rl.SetShaderValue(crt_shader, loc_render_size, &render_size, .VEC2)
+
+		time_seconds := f32(rl.GetTime())
+		rl.SetShaderValue(crt_shader, loc_time, &time_seconds, .FLOAT)
+
 		rl.BeginMode2D(game.screen_camera)
 
+		rl.BeginShaderMode(crt_shader)
 		draw_renderer(&game.renderer)
+		rl.EndShaderMode()
 
 		if game.state == .Editor {
 			draw_screen_editor(&editor, &game)
 		}
+
+		rl.DrawFPS(10, 10)
 
 		rl.EndMode2D()
 
 		rl.EndDrawing()
 	}
 
+	rl.UnloadShader(crt_shader)
 	unload_game(&game)
 	rl.CloseWindow()
 }
