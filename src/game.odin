@@ -9,6 +9,7 @@ Vec2i :: [2]int
 Game :: struct {
 	world_camera:  rl.Camera2D,
 	screen_camera: rl.Camera2D,
+	step_sound:    rl.Sound,
 	renderer:      rl.RenderTexture,
 	state:         GameState,
 	level:         Level,
@@ -16,6 +17,7 @@ Game :: struct {
 }
 
 GameState :: enum {
+	Intro,
 	Gameplay,
 	Editor,
 }
@@ -27,6 +29,7 @@ init_game :: proc() -> Game {
 		renderer = rl.LoadRenderTexture(320, 180),
 		atlas = rl.LoadTexture("res/ase/tileset.png"),
 		level = load_level("levels/level.json"),
+		step_sound = rl.LoadSound("res/sound/step.wav"),
 	}
 
 	return game
@@ -41,6 +44,10 @@ draw_game :: proc(using game: ^Game) {
 	for entity in level.entities {
 		draw_entity(entity, game)
 	}
+}
+
+draw_game_ui :: proc(using game: ^Game) {
+	rl.DrawText("X: 99", 10, 10, 0, {255, 191, 0, 255})
 }
 
 get_sprite_src_rect :: proc(coord: Vec2i) -> rl.Rectangle {

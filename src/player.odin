@@ -2,6 +2,7 @@ package soko_knight
 
 import rl "vendor:raylib"
 
+
 move_player :: proc(entity: ^Entity, game: ^Game) {
 	dir: Vec2i
 	if rl.IsKeyPressed(.W) || rl.IsKeyPressed(.UP) {
@@ -19,5 +20,6 @@ move_player :: proc(entity: ^Entity, game: ^Game) {
 
 	if dir != {0, 0} {
 		try_move(entity, dir, game)
+		rl.PlaySound(game.step_sound)
 	}
 }

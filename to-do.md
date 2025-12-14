@@ -2,11 +2,11 @@
 
 ## Gameplay
 
-- [ ] Win Condition
-- [ ] Multiple levels
+- [ ] Collectables
+- [ ] Doors and keys
+- [ ] Items
 - [ ] Undo
 - [ ] UI Elements
-  - [ ] Level number & name
   - [ ] Win messages
 - [ ] SFX
 

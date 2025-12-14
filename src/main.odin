@@ -5,6 +5,8 @@ import rl "vendor:raylib"
 main :: proc() {
 	rl.SetConfigFlags({.WINDOW_RESIZABLE})
 	rl.InitWindow(1280, 720, "Sokoban Adventure")
+	rl.InitAudioDevice()
+	rl.SetTargetFPS(60)
 
 	game := init_game()
 	editor: Editor
@@ -13,9 +15,15 @@ main :: proc() {
 	loc_render_size := rl.GetShaderLocation(crt_shader, "renderSize")
 	loc_time := rl.GetShaderLocation(crt_shader, "time")
 
+	intro := rl.LoadTexture("res/ase/intro.png")
+
 	for !rl.WindowShouldClose() {
 		// UPDATE
 		switch game.state {
+		case .Intro:
+			if rl.IsKeyPressed(.ENTER) {
+				game.state = .Gameplay
+			}
 		case .Gameplay:
 			if rl.IsKeyPressed(.F1) {
 				game.state = .Editor
@@ -34,8 +42,15 @@ main :: proc() {
 
 		// GAME //
 		rl.ClearBackground(rl.RAYWHITE)
-		draw_game(&game)
-		if game.state == .Editor {
+
+		switch game.state {
+		case .Intro:
+			rl.DrawTexture(intro, 0, 0, rl.WHITE)
+		case .Gameplay:
+			draw_game(&game)
+			draw_game_ui(&game)
+		case .Editor:
+			draw_game(&game)
 			draw_canvas_editor(&editor, &game)
 		}
 
@@ -45,7 +60,6 @@ main :: proc() {
 		// UI //
 		rl.BeginDrawing()
 		rl.ClearBackground(rl.BLACK)
-
 
 		render_w := f32(game.renderer.texture.width)
 		render_h := f32(game.renderer.texture.height)
@@ -65,8 +79,6 @@ main :: proc() {
 			draw_screen_editor(&editor, &game)
 		}
 
-		rl.DrawFPS(10, 10)
-
 		rl.EndMode2D()
 
 		rl.EndDrawing()
@@ -74,5 +86,6 @@ main :: proc() {
 
 	rl.UnloadShader(crt_shader)
 	unload_game(&game)
+	rl.CloseAudioDevice()
 	rl.CloseWindow()
 }
