@@ -79,6 +79,7 @@ update_editor :: proc(game: ^Game, editor: ^Editor) {
 	if rl.IsKeyPressed(.TWO) {editor.selection = .Player}
 	if rl.IsKeyPressed(.THREE) {editor.selection = .Ground}
 	if rl.IsKeyPressed(.FOUR) {editor.selection = .Wall}
+	if rl.IsKeyPressed(.FIVE) {editor.selection = .Collectable}
 
 	if rl.IsKeyPressed(.F5) {save_level(game.level, "levels/level.json")}
 	if rl.IsKeyPressed(.F9) {game.level = load_level("levels/level.json")}
@@ -108,7 +109,7 @@ draw_canvas_editor :: proc(editor: ^Editor, game: ^Game) {
 	switch selection in editor.selection {
 	case EntityType:
 		entity_type := editor.selection.(EntityType)
-		sprite_coord := ENTITY_SPRITES[entity_type]
+		sprite_coord := ENTITY_DEFINITIONS[entity_type].sprite
 		src = get_sprite_src_rect(sprite_coord)
 	case TileType:
 		tile_type := editor.selection.(TileType)

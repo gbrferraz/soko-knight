@@ -1,5 +1,6 @@
 package soko_knight
 
+import "core:fmt"
 import rl "vendor:raylib"
 
 TILE_SIZE :: 10
@@ -11,6 +12,7 @@ Game :: struct {
 	screen_camera: rl.Camera2D,
 	step_sound:    rl.Sound,
 	renderer:      rl.RenderTexture,
+	collected:     int,
 	state:         GameState,
 	level:         Level,
 	atlas:         rl.Texture2D,
@@ -47,7 +49,8 @@ draw_game :: proc(using game: ^Game) {
 }
 
 draw_game_ui :: proc(using game: ^Game) {
-	rl.DrawText("X: 99", 10, 10, 0, {255, 191, 0, 255})
+	collected_count := fmt.ctprintfln("x: %i", game.collected)
+	rl.DrawText(collected_count, 10, 10, 0, {255, 191, 0, 255})
 }
 
 get_sprite_src_rect :: proc(coord: Vec2i) -> rl.Rectangle {

@@ -20,6 +20,19 @@ move_player :: proc(entity: ^Entity, game: ^Game) {
 
 	if dir != {0, 0} {
 		try_move(entity, dir, game)
+		try_interact(entity, game)
 		rl.PlaySound(game.step_sound)
+	}
+}
+
+try_interact :: proc(entity: ^Entity, game: ^Game) {
+	for interactable, i in game.level.entities {
+		if entity.pos == interactable.pos {
+			#partial switch interactable.type {
+			case .Collectable:
+				game.collected += 1
+				unordered_remove(&game.level.entities, i)
+			}
+		}
 	}
 }
