@@ -25,8 +25,8 @@ ENTITY_DEFINITIONS := [EntityType]EntityProperties {
 	.Player = {sprite = {1, 0}, solid = false, pushable = true},
 	.Box = {sprite = {0, 2}, solid = true, pushable = true},
 	.Collectable = {sprite = {2, 2}, solid = false, pushable = false},
-	.Key = {sprite = {1, 2}, solid = false, pushable = false},
-	.Door = {sprite = {1, 1}, solid = true, pushable = true},
+	.Key = {sprite = {1, 2}, solid = false, pushable = true},
+	.Door = {sprite = {1, 1}, solid = true, pushable = false},
 }
 
 draw_entity :: proc(using entity: Entity, game: ^Game) {

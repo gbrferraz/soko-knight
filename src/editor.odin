@@ -11,7 +11,7 @@ Editor :: struct {
 
 EditorMode :: enum {
 	Entity,
-	Tilemap,
+	Tile,
 }
 
 EditorSelection :: union {
@@ -75,11 +75,42 @@ update_editor :: proc(game: ^Game, editor: ^Editor) {
 		remove_selection(game)
 	}
 
-	if rl.IsKeyPressed(.ONE) {editor.selection = .Box}
-	if rl.IsKeyPressed(.TWO) {editor.selection = .Player}
-	if rl.IsKeyPressed(.THREE) {editor.selection = .Ground}
-	if rl.IsKeyPressed(.FOUR) {editor.selection = .Wall}
-	if rl.IsKeyPressed(.FIVE) {editor.selection = .Collectable}
+	if rl.IsKeyPressed(.ONE) {
+		editor.mode = .Entity
+		editor.selection = EntityType(0)
+	}
+
+	if rl.IsKeyPressed(.TWO) {
+		editor.mode = .Tile
+		editor.selection = TileType(0)
+	}
+
+	wheel := rl.GetMouseWheelMove()
+
+	if wheel != 0 {
+		dir := int(wheel)
+
+		switch editor.mode {
+		case .Entity:
+			current, ok := editor.selection.(EntityType)
+			if !ok {current = EntityType(0)}
+
+			count := len(EntityType)
+			index := int(current)
+
+			new_index := (index + dir + count) % count
+			editor.selection = EntityType(new_index)
+		case .Tile:
+			current, ok := editor.selection.(TileType)
+			if !ok {current = TileType(0)}
+
+			count := len(TileType)
+			index := int(current)
+
+			new_index := (index + dir + count) % count
+			editor.selection = TileType(new_index)
+		}
+	}
 
 	if rl.IsKeyPressed(.F5) {save_level(game.level, "levels/level.json")}
 	if rl.IsKeyPressed(.F9) {game.level = load_level("levels/level.json")}
@@ -95,7 +126,13 @@ draw_screen_editor :: proc(editor: ^Editor, game: ^Game) {
 	rl.DrawText(coords, 10, rl.GetScreenHeight() - 40, 30, rl.GREEN)
 
 	selection_type := fmt.ctprintf("%v", editor.selection)
-	rl.DrawText(selection_type, 10, 10, 30, rl.GREEN)
+
+	switch editor.mode {
+	case .Entity:
+		rl.DrawText("Entity Mode", 10, 10, 30, rl.WHITE)
+	case .Tile:
+		rl.DrawText("Tile Mode", 10, 10, 30, rl.WHITE)
+	}
 }
 
 draw_canvas_editor :: proc(editor: ^Editor, game: ^Game) {
