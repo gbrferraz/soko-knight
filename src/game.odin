@@ -13,6 +13,7 @@ Game :: struct {
 	step_sound:    rl.Sound,
 	renderer:      rl.RenderTexture,
 	collected:     int,
+	keys:          int,
 	state:         GameState,
 	level:         Level,
 	atlas:         rl.Texture2D,
@@ -51,6 +52,9 @@ draw_game :: proc(using game: ^Game) {
 draw_game_ui :: proc(using game: ^Game) {
 	collected_count := fmt.ctprintfln("x: %i", game.collected)
 	rl.DrawText(collected_count, 10, 10, 0, {255, 191, 0, 255})
+
+	key_count := fmt.ctprintfln("x: %i", game.keys)
+	rl.DrawText(key_count, 10, 22, 0, {255, 191, 0, 255})
 }
 
 get_sprite_src_rect :: proc(coord: Vec2i) -> rl.Rectangle {
