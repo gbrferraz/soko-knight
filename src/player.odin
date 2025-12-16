@@ -32,6 +32,8 @@ try_interact :: proc(entity: ^Entity, game: ^Game) {
 			case .Collectable:
 				game.collected += 1
 				unordered_remove(&game.level.entities, i)
+			case .Key:
+				unordered_remove(&game.level.entities, i)
 			}
 		}
 	}

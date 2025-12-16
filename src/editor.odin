@@ -63,17 +63,13 @@ remove_selection :: proc(game: ^Game) {
 }
 
 update_editor :: proc(game: ^Game, editor: ^Editor) {
-	if rl.IsMouseButtonDown(.MIDDLE) {
-		drag_camera(&game.world_camera)
-	}
+	if rl.IsMouseButtonDown(.MIDDLE) {drag_camera(&game.world_camera)}
+	if rl.IsMouseButtonDown(.LEFT) {place_selection(editor.selection, game)}
 
-	if rl.IsMouseButtonDown(.LEFT) {
-		place_selection(editor.selection, game)
-	}
+	if rl.IsKeyPressed(.F5) {save_level(game.level, "levels/level.json")}
+	if rl.IsKeyPressed(.F9) {game.level = load_level("levels/level.json")}
 
-	if rl.IsMouseButtonDown(.RIGHT) {
-		remove_selection(game)
-	}
+	if rl.IsMouseButtonDown(.RIGHT) {remove_selection(game)} 	// This should handle tiles too
 
 	if rl.IsKeyPressed(.ONE) {
 		editor.mode = .Entity
@@ -111,9 +107,6 @@ update_editor :: proc(game: ^Game, editor: ^Editor) {
 			editor.selection = TileType(new_index)
 		}
 	}
-
-	if rl.IsKeyPressed(.F5) {save_level(game.level, "levels/level.json")}
-	if rl.IsKeyPressed(.F9) {game.level = load_level("levels/level.json")}
 }
 
 draw_screen_editor :: proc(editor: ^Editor, game: ^Game) {
