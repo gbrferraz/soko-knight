@@ -4,6 +4,7 @@ import "core:fmt"
 import rl "vendor:raylib"
 
 TILE_SIZE :: 10
+BG_COLOR :: rl.Color{36, 22, 39, 255}
 
 Vec2i :: [2]int
 
@@ -43,6 +44,7 @@ update_game :: proc(using game: ^Game) {
 }
 
 draw_game :: proc(using game: ^Game) {
+	rl.ClearBackground(BG_COLOR)
 	draw_tilemap(game)
 	for entity in level.entities {
 		draw_entity(entity, game)

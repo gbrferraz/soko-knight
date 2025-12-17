@@ -3,7 +3,7 @@
 ## Gameplay
 
 - [x] Collectables
-- [ ] Doors and keys
+- [x] Doors and keys
 - [ ] Items
 - [ ] Undo
 - [ ] UI Elements
@@ -13,6 +13,7 @@
 ## Editor
 
 - [x] Camera panning
+- [ ] Infinite Levels
 - [ ] Camera zoom
 - [ ] Tile mode
 - [ ] Entity mode

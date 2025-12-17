@@ -73,7 +73,7 @@ get_entity_index_at_pos :: proc(pos: Vec2i, entities: [dynamic]Entity) -> (int, 
 try_move :: proc(entity: ^Entity, dir: Vec2i, game: ^Game) -> bool {
 	dest_pos := entity.pos + dir
 
-	if tile, ok := get_tile_at_pos(game.level.tilemap, dest_pos); ok {
+	if tile, ok := get_tile_at_pos(dest_pos, game.level.tilemap); ok {
 		if TILE_PROPERTIES[tile].solid {
 			return false
 		}
@@ -90,13 +90,14 @@ try_move :: proc(entity: ^Entity, dir: Vec2i, game: ^Game) -> bool {
 
 		if is_solid {
 			if is_pushable {
-				if !try_move(obstacle, dir, game) {
-					return false
+				if try_move(obstacle, dir, game) {
+					entity.pos = dest_pos
+					return true
 				}
-			} else {
-				return false
 			}
+			return false
 		}
+
 	}
 
 	entity.pos = dest_pos
